@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kde-plasma-agentic-os-skill"
-version = "0.1.2"
+version = "0.1.3"
 description = "Distributable Codex skill and local API stack for KDE Plasma automation"
 readme = "README.md"
 requires-python = ">=3.10"

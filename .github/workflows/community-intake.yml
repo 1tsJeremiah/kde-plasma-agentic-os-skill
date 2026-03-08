@@ -27,10 +27,20 @@ jobs:
             const issue_number = issue.number;
 
             const labels = (issue.labels || []).map(l => typeof l === 'string' ? l : l.name);
+            const title = (issue.title || '').toLowerCase();
+
+            let inferredKind = null;
+            if (!labels.some(l => l && l.startsWith('kind:'))) {
+              if (title.startsWith('[idea]')) inferredKind = 'kind:idea';
+              else if (title.startsWith('[scale]')) inferredKind = 'kind:scale-request';
+              else if (title.startsWith('[package expansion]')) inferredKind = 'kind:package-expansion';
+              else if (title.startsWith('[bug]')) inferredKind = 'kind:bug';
+            }
             const hasStatus = labels.some(l => l && l.startsWith('status:'));
             const toAdd = [];
             if (!hasStatus) toAdd.push('status:needs-triage');
             if (!labels.includes('community:intake')) toAdd.push('community:intake');
+            if (inferredKind) toAdd.push(inferredKind);
 
             if (toAdd.length > 0) {
               await github.rest.issues.addLabels({ owner, repo, issue_number, labels: toAdd });
@@ -49,7 +59,8 @@ jobs:
               return;
             }
 
-            const kind = labels.find(l => l && l.startsWith('kind:')) || 'kind:general';
+            const finalLabels = [...labels, ...toAdd];
+            const kind = finalLabels.find(l => l && l.startsWith('kind:')) || 'kind:general';
 
             const guidance = {
               'kind:scale-request': '- Share target concurrency/latency goals and current measured limits.\n- Include reproducible workload steps.',

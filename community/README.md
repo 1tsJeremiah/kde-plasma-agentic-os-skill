@@ -7,6 +7,8 @@ This folder documents automated community intake and planning signals.
 - `community-intake.yml`: auto-triage labels and first response on issue intake.
 - `community-digest.yml`: weekly summary comment with open demand by category.
 
+`community-intake.yml` infers `kind:*` labels from title prefixes (`[Scale]`, `[Idea]`, `[Package Expansion]`, `[Bug]`) when issues are not created via forms.
+
 ## Categories
 
 - `kind:scale-request`

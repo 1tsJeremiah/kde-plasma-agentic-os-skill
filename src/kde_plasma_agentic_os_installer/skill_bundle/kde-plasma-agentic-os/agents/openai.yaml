@@ -1,0 +1,4 @@
+interface:
+  display_name: "KDE Plasma Agentic OS"
+  short_description: "Automate KDE Plasma via local APIs"
+  default_prompt: "Use $kde-plasma-agentic-os to inspect or automate KDE Plasma safely through local-only endpoints and D-Bus."

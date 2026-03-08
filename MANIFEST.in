@@ -1,0 +1,5 @@
+include README.md
+include LICENSE
+include CONTRIBUTING.md
+include SECURITY.md
+recursive-include src/kde_plasma_agentic_os_installer/skill_bundle *

@@ -1,0 +1,30 @@
+name: Idea
+description: Propose a new capability, workflow, or user experience improvement.
+title: "[Idea] "
+labels: ["kind:idea", "status:needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share your idea and the user problem it solves.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What pain point are you trying to solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Describe your proposed solution.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What alternatives did you evaluate?
+    validations:
+      required: false

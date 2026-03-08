@@ -114,6 +114,13 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 Best-practice architecture guidance is in [docs/BEST_PRACTICES.md](docs/BEST_PRACTICES.md).
 Publishing setup is in [docs/PUBLISHING.md](docs/PUBLISHING.md).
 
+## Community and Intake
+
+- Issue forms are available for scale requests, ideas, package expansion, and bugs.
+- Weekly community digest automation summarizes open demand for maintainers and agents.
+- Support paths: [SUPPORT.md](SUPPORT.md)
+- Conduct expectations: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+
 ## License
 
 MIT, see [LICENSE](LICENSE).

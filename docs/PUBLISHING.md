@@ -30,9 +30,10 @@ No PyPI API token secret is required for trusted publishing.
 - `src/kde_plasma_agentic_os_installer/__init__.py` -> `__version__`
 
 2. Commit and push `main`.
-3. Create tag `vX.Y.Z` matching package version.
-4. Create GitHub Release for that tag.
-5. `Publish to PyPI` workflow runs automatically on release publish.
+3. Update the draft release notes if needed.
+4. Create tag `vX.Y.Z` matching package version.
+5. Create GitHub Release for that tag.
+6. `Publish to PyPI` workflow runs automatically on release publish.
 
 The workflow enforces tag/version match on release events.
 

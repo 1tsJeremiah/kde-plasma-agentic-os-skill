@@ -1,0 +1,70 @@
+name: Community Intake
+
+on:
+  issues:
+    types: [opened, reopened, edited]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  triage-and-respond:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Apply triage label and post acknowledgement
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            if (!issue || issue.pull_request) {
+              core.info('No issue payload or this is a pull request.');
+              return;
+            }
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = issue.number;
+
+            const labels = (issue.labels || []).map(l => typeof l === 'string' ? l : l.name);
+            const hasStatus = labels.some(l => l && l.startsWith('status:'));
+            const toAdd = [];
+            if (!hasStatus) toAdd.push('status:needs-triage');
+            if (!labels.includes('community:intake')) toAdd.push('community:intake');
+
+            if (toAdd.length > 0) {
+              await github.rest.issues.addLabels({ owner, repo, issue_number, labels: toAdd });
+            }
+
+            const marker = '<!-- community-intake-bot -->';
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number,
+              per_page: 100,
+            });
+
+            if (comments.some(c => (c.body || '').includes(marker))) {
+              core.info('Acknowledgement already posted.');
+              return;
+            }
+
+            const kind = labels.find(l => l && l.startsWith('kind:')) || 'kind:general';
+
+            const guidance = {
+              'kind:scale-request': '- Share target concurrency/latency goals and current measured limits.\n- Include reproducible workload steps.',
+              'kind:idea': '- Describe the user problem and expected outcome.\n- Include acceptance criteria when possible.',
+              'kind:package-expansion': '- Propose package name/scope split and maintenance expectations.\n- Clarify compatibility constraints.',
+              'kind:bug': '- Include exact reproduction commands and logs.\n- Include KDE/OS/Python versions.',
+              'kind:general': '- Include clear reproduction or proposal details.\n- Include environment/version context.'
+            };
+
+            const body = `${marker}
+            Thanks for the submission. This issue has been added to community intake and marked for triage.
+
+            **Next-step guidance (${kind})**
+            ${guidance[kind] || guidance['kind:general']}
+
+            A maintainer or agent pipeline will follow up after triage.`;
+
+            await github.rest.issues.createComment({ owner, repo, issue_number, body });

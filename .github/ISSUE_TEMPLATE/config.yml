@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Community Discussions
+    url: https://github.com/1tsJeremiah/kde-plasma-agentic-os-skill/discussions
+    about: Ask questions, share ideas, and discuss roadmap topics.
+  - name: Security Reports
+    url: https://github.com/1tsJeremiah/kde-plasma-agentic-os-skill/security/advisories/new
+    about: Report security vulnerabilities privately.

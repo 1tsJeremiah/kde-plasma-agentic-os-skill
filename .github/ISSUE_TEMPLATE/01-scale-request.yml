@@ -1,0 +1,38 @@
+name: Scale Request
+description: Request scaling improvements for performance, reliability, or throughput.
+title: "[Scale] "
+labels: ["kind:scale-request", "status:needs-triage", "area:endpoint-api"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for load, latency, concurrency, and reliability scale requests.
+  - type: input
+    id: workload
+    attributes:
+      label: Target workload
+      description: What scale do you need to reach?
+      placeholder: "ex: 100 concurrent automation calls with p95 < 300ms"
+    validations:
+      required: true
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: Current behavior
+      description: Describe current limits and observed bottlenecks.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction details
+      description: Commands, endpoint calls, or scripts used to reproduce.
+    validations:
+      required: true
+  - type: textarea
+    id: success-criteria
+    attributes:
+      label: Success criteria
+      description: How will we know this is solved?
+    validations:
+      required: true

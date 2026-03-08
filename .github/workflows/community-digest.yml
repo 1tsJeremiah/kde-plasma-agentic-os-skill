@@ -1,0 +1,113 @@
+name: Community Digest
+
+on:
+  schedule:
+    - cron: "0 15 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  summarize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and post weekly digest
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'open',
+              per_page: 100,
+            });
+
+            const openIssues = issues.filter(i => !i.pull_request);
+            const now = new Date();
+            const since = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+            const byKind = {
+              'kind:scale-request': [],
+              'kind:idea': [],
+              'kind:package-expansion': [],
+              'kind:bug': [],
+              'other': [],
+            };
+
+            for (const issue of openIssues) {
+              const labels = (issue.labels || []).map(l => typeof l === 'string' ? l : l.name);
+              const kind = labels.find(l => l && l.startsWith('kind:'));
+              if (kind && byKind[kind]) byKind[kind].push(issue);
+              else byKind.other.push(issue);
+            }
+
+            const recent = openIssues.filter(i => new Date(i.created_at) >= since);
+
+            const lines = [];
+            lines.push('<!-- community-digest-bot -->');
+            lines.push(`# Community Intake Digest (${now.toISOString().slice(0, 10)})`);
+            lines.push('');
+            lines.push(`- Open issues: ${openIssues.length}`);
+            lines.push(`- New in last 7 days: ${recent.length}`);
+            lines.push('');
+            lines.push('## Open by category');
+
+            for (const [kind, list] of Object.entries(byKind)) {
+              lines.push(`- ${kind}: ${list.length}`);
+            }
+
+            lines.push('');
+            lines.push('## New this week');
+            if (recent.length === 0) {
+              lines.push('- None');
+            } else {
+              for (const issue of recent.slice(0, 20)) {
+                lines.push(`- #${issue.number} ${issue.title} (${issue.html_url})`);
+              }
+            }
+
+            lines.push('');
+            lines.push('## Top open scale requests');
+            const scale = byKind['kind:scale-request'];
+            if (scale.length === 0) {
+              lines.push('- None');
+            } else {
+              for (const issue of scale.slice(0, 10)) {
+                lines.push(`- #${issue.number} ${issue.title} (${issue.html_url})`);
+              }
+            }
+
+            const body = lines.join('\n');
+
+            const digestTitle = 'Community Intake Digest';
+            const digestCandidates = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: 'open',
+              labels: 'area:agent-pipeline',
+              per_page: 100,
+            });
+            let digestIssue = digestCandidates.find(i => !i.pull_request && i.title === digestTitle);
+
+            if (!digestIssue) {
+              const created = await github.rest.issues.create({
+                owner,
+                repo,
+                title: digestTitle,
+                body: 'Automated weekly community demand summary for maintainers and agent triage.',
+                labels: ['area:agent-pipeline', 'community:intake'],
+              });
+              digestIssue = created.data;
+            }
+
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: digestIssue.number,
+              body,
+            });

@@ -27,21 +27,28 @@ This project ships one consolidated skill (`kde-plasma-agentic-os`) plus a local
 
 ## Quick Install
 
-### Option A: pipx from GitHub (recommended)
+### Option A: pipx from PyPI (after first publish)
 
 ```bash
-pipx install git+https://github.com/1tsJeremiah/kde-plasma-agentic-os-skill.git
+pipx install kde-plasma-agentic-os-skill
 kde-plasma-skill install --with-service
 ```
 
-### Option B: pip from GitHub
+### Option B: pip from PyPI (after first publish)
 
 ```bash
-python3 -m pip install git+https://github.com/1tsJeremiah/kde-plasma-agentic-os-skill.git
+python3 -m pip install kde-plasma-agentic-os-skill
 kde-plasma-skill install --with-service
 ```
 
-### Option C: from source
+### Option C: pipx from GitHub (immediate fallback)
+
+```bash
+pipx install git+https://github.com/1tsJeremiah/kde-plasma-agentic-os-skill.git@main
+kde-plasma-skill install --with-service
+```
+
+### Option D: from source
 
 ```bash
 git clone https://github.com/1tsJeremiah/kde-plasma-agentic-os-skill.git
@@ -105,6 +112,7 @@ src/kde_plasma_agentic_os_installer/
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Best-practice architecture guidance is in [docs/BEST_PRACTICES.md](docs/BEST_PRACTICES.md).
+Publishing setup is in [docs/PUBLISHING.md](docs/PUBLISHING.md).
 
 ## License
 

@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kde-plasma-agentic-os-skill"
-version = "0.1.0"
+version = "0.1.2"
 description = "Distributable Codex skill and local API stack for KDE Plasma automation"
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "MIT"
 authors = [
   { name = "KDE Plasma Agentic OS Contributors" }
 ]
@@ -17,7 +17,6 @@ classifiers = [
   "Development Status :: 3 - Alpha",
   "Environment :: Console",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
   "Operating System :: POSIX :: Linux",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
@@ -42,3 +41,6 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 "kde_plasma_agentic_os_installer" = ["skill_bundle/kde-plasma-agentic-os/**"]
+
+[tool.setuptools.exclude-package-data]
+"kde_plasma_agentic_os_installer" = ["**/__pycache__/*", "**/*.py[cod]"]

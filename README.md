@@ -27,17 +27,17 @@ This project ships one consolidated skill (`kde-plasma-agentic-os`) plus a local
 
 ## Quick Install
 
-### Option A: pipx (recommended)
+### Option A: pipx from GitHub (recommended)
 
 ```bash
-pipx install kde-plasma-agentic-os-skill
+pipx install git+https://github.com/1tsJeremiah/kde-plasma-agentic-os-skill.git
 kde-plasma-skill install --with-service
 ```
 
-### Option B: pip
+### Option B: pip from GitHub
 
 ```bash
-python3 -m pip install kde-plasma-agentic-os-skill
+python3 -m pip install git+https://github.com/1tsJeremiah/kde-plasma-agentic-os-skill.git
 kde-plasma-skill install --with-service
 ```
 
